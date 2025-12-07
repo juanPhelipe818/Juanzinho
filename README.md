@@ -1,26 +1,25 @@
--- Altera o céu e atmosfera para todos os jogadores
+-- Script para alterar o Sky global do jogo
+-- Coloque em: ServerScriptService
+
 local Lighting = game:GetService("Lighting")
 
--- Criar um novo Sky (substitui o padrão)
-local sky = Instance.new("Sky")
-sky.Name = "CustomSky"
-sky.SkyboxBk = "http://www.roblox.com/asset/?id=358313209"
-sky.SkyboxDn = "http://www.roblox.com/asset/?id=358313209"
-sky.SkyboxFt = "http://www.roblox.com/asset/?id=358313209"
-sky.SkyboxLf = "http://www.roblox.com/asset/?id=358313209"
-sky.SkyboxRt = "http://www.roblox.com/asset/?id=358313209"
-sky.SkyboxUp = "http://www.roblox.com/asset/?id=358313209"
-sky.Parent = Lighting
-
--- Editar Atmosphere
-local atmosphere = Lighting:FindFirstChildOfClass("Atmosphere")
-if not atmosphere then
-    atmosphere = Instance.new("Atmosphere", Lighting)
+-- Remove qualquer Sky antigo
+local oldSkies = Lighting:GetChildren()
+for _, v in ipairs(oldSkies) do
+    if v:IsA("Sky") then
+        v:Destroy()
+    end
 end
 
-atmosphere.Density = 0.3
-atmosphere.Offset = 0.25
-atmosphere.Color = Color3.fromRGB(199, 199, 199)
-atmosphere.Decay = Color3.fromRGB(106, 112, 124)
-atmosphere.Glare = 0
-atmosphere.Haze = 0
+-- Cria o novo Sky usando o ID solicitado
+local sky = Instance.new("Sky")
+sky.Name = "NewSky"
+sky.SkyboxBk = "rbxassetid://358313209"
+sky.SkyboxDn = "rbxassetid://358313209"
+sky.SkyboxFt = "rbxassetid://358313209"
+sky.SkyboxLf = "rbxassetid://358313209"
+sky.SkyboxRt = "rbxassetid://358313209"
+sky.SkyboxUp = "rbxassetid://358313209"
+sky.Parent = Lighting
+
+print("Novo Sky aplicado com sucesso!")
