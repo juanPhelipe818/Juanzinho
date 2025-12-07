@@ -1,25 +1,47 @@
--- Script para alterar o Sky global do jogo
--- Coloque em: ServerScriptService
+-- Cria pasta + script automaticamente no ServerScriptService com o sky solicitado
 
+local SSS = game:GetService("ServerScriptService")
+
+-- Criar pasta
+local folder = Instance.new("Folder")
+folder.Name = "SkyChanger"
+folder.Parent = SSS
+
+-- Criar conteúdo do Script
+local scriptCode = [[
 local Lighting = game:GetService("Lighting")
+local SKY_ID = "rbxassetid://358313209" -- Sky do link que você enviou
 
--- Remove qualquer Sky antigo
-local oldSkies = Lighting:GetChildren()
-for _, v in ipairs(oldSkies) do
-    if v:IsA("Sky") then
-        v:Destroy()
+local function ApplySky()
+    -- Remove Sky antigo
+    for _, obj in ipairs(Lighting:GetChildren()) do
+        if obj:IsA("Sky") then
+            obj:Destroy()
+        end
     end
+
+    -- Cria o novo Sky
+    local newSky = Instance.new("Sky")
+    newSky.Name = "GlobalSky"
+
+    newSky.SkyboxBk = SKY_ID
+    newSky.SkyboxDn = SKY_ID
+    newSky.SkyboxFt = SKY_ID
+    newSky.SkyboxLf = SKY_ID
+    newSky.SkyboxRt = SKY_ID
+    newSky.SkyboxUp = SKY_ID
+
+    newSky.Parent = Lighting
 end
 
--- Cria o novo Sky usando o ID solicitado
-local sky = Instance.new("Sky")
-sky.Name = "NewSky"
-sky.SkyboxBk = "rbxassetid://358313209"
-sky.SkyboxDn = "rbxassetid://358313209"
-sky.SkyboxFt = "rbxassetid://358313209"
-sky.SkyboxLf = "rbxassetid://358313209"
-sky.SkyboxRt = "rbxassetid://358313209"
-sky.SkyboxUp = "rbxassetid://358313209"
-sky.Parent = Lighting
+-- Aplica automaticamente
+ApplySky()
+]]
 
-print("Novo Sky aplicado com sucesso!")
+-- Criar Script no ServerScriptService
+local newScript = Instance.new("Script")
+newScript.Name = "AutoSkyChanger"
+newScript.Source = scriptCode
+newScript.Parent = folder
+
+print("Pasta + Script criados com sucesso em ServerScriptService!")
